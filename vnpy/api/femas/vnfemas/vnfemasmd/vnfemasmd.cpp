@@ -53,7 +53,6 @@ void MdApi::OnRspUserLogin(CUstpFtdcRspUserLoginField *pRspUserLogin, CUstpFtdcR
 	}
 	if (pRspInfo)
 	{
-		cout << "md OnRspUserLogin pRspInfo" << endl;
 		CUstpFtdcRspInfoField *task_error = new CUstpFtdcRspInfoField();
 		*task_error = *pRspInfo;
 		task.task_error = task_error;
@@ -314,7 +313,6 @@ void MdApi::processRspUserLogin(Task *task)
 	dict error;
 	if (task->task_error)
 	{
-		cout << "md processRspUserLogin task_error" << endl;
 		CUstpFtdcRspInfoField *task_error = (CUstpFtdcRspInfoField*)task->task_error;
 		error["ErrorID"] = task_error->ErrorID;
 		error["ErrorMsg"] = toUtf(task_error->ErrorMsg);
@@ -719,7 +717,7 @@ public:
 
 PYBIND11_MODULE(vnfemasmd, m)
 {
-	class_<MdApi, PyMdApi> mdapi(m, "MdApi");
+	class_<MdApi, PyMdApi> mdapi(m, "MdApi", module_local());
 	mdapi
 		.def(init<>())
 		.def("createFtdcMdApi", &MdApi::createFtdcMdApi)

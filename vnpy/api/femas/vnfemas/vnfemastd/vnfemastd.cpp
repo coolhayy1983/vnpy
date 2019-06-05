@@ -91,11 +91,8 @@ void TdApi::OnRspUserLogin(CUstpFtdcRspUserLoginField *pRspUserLogin, CUstpFtdcR
 	}
 	if (pRspInfo)
 	{
-		cout << "td OnRspUserLogin pRspInfo" << endl;
 		CUstpFtdcRspInfoField *task_error = new CUstpFtdcRspInfoField();
 		*task_error = *pRspInfo;
-		cout << "td OnRspUserLogin pRspInfo errorid" <<endl;
-		cout << pRspInfo->ErrorID << endl;
 		task.task_error = task_error;
 	}
 	task.task_id = nRequestID;
@@ -630,15 +627,12 @@ void TdApi::OnRspQryInvestorAccount(CUstpFtdcRspInvestorAccountField *pRspInvest
 	task.task_name = ONRSPQRYINVESTORACCOUNT;
 	if (pRspInvestorAccount)
 	{
-		cout << "OnRspQryInvestorAccount" << endl;
-		cout << pRspInvestorAccount->AccountID << endl;
 		CUstpFtdcRspInvestorAccountField *task_data = new CUstpFtdcRspInvestorAccountField();
 		*task_data = *pRspInvestorAccount;
 		task.task_data = task_data;
 	}
 	if (pRspInfo)
 	{
-		cout << pRspInfo->ErrorMsg << endl;
 		CUstpFtdcRspInfoField *task_error = new CUstpFtdcRspInfoField();
 		*task_error = *pRspInfo;
 		task.task_error = task_error;
@@ -1427,7 +1421,6 @@ void TdApi::processRspUserLogin(Task *task)
 	dict error;
 	if (task->task_error)
 	{
-		cout << "td processRspUserLogin task_error" << endl;
 		CUstpFtdcRspInfoField *task_error = (CUstpFtdcRspInfoField*)task->task_error;
 		error["ErrorID"] = task_error->ErrorID;
 		error["ErrorMsg"] = toUtf(task_error->ErrorMsg);
@@ -2458,14 +2451,11 @@ void TdApi::processRspQryInvestorAccount(Task *task)
 		data["Margin"] = task_data->Margin;
 		data["Premium"] = task_data->Premium;
 		data["Risk"] = task_data->Risk;
-		print("processRspQryInvestorAccount");
-		print(data["AccountID"]);
 		delete task->task_data;
 	}
 	dict error;
 	if (task->task_error)
 	{
-		print("task->task_error");
 		CUstpFtdcRspInfoField *task_error = (CUstpFtdcRspInfoField*)task->task_error;
 		error["ErrorID"] = task_error->ErrorID;
 		error["ErrorMsg"] = toUtf(task_error->ErrorMsg);
@@ -4244,7 +4234,7 @@ public:
 
 PYBIND11_MODULE(vnfemastd, m)
 {
-	class_<TdApi, PyTdApi> TdApi(m, "TdApi");
+	class_<TdApi, PyTdApi> TdApi(m, "TdApi", module_local());
 	TdApi
 		.def(init<>())
 		.def("createFtdcTraderApi", &TdApi::createFtdcTraderApi)
