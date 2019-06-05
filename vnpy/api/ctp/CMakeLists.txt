@@ -25,16 +25,16 @@ if (WIN32)
 elseif (UNIX)
     message("Under unix: " ${CMAKE_SIZEOF_VOID_P})
     if (CMAKE_SIZEOF_VOID_P MATCHES "8")
-        set(CTPAPI_PATH ctpapi/x64_linux)
+        set(CTPAPI_PATH ctpapi)
     endif()
 endif()
 include_directories(${CTPAPI_PATH})
 set(CTPAPI_LIBRARY )
 find_library(CTPAPI_MD_LIBRARY
-  NAMES thostmduserapi
+  NAMES thostmduserapi_se
   PATHS ${CTPAPI_PATH}) 
 find_library(CTPAPI_TD_LIBRARY
-  NAMES thosttraderapi
+  NAMES thosttraderapi_se
   PATHS ${CTPAPI_PATH})
 
 
